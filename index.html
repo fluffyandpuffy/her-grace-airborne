@@ -254,13 +254,31 @@
   .cat{
     width: 100%; height: 100%; display:block;
     overflow: visible;
+    backface-visibility: hidden;
   }
-  .thickness{
+  /* volume: a "lathe of blades" arranged radially around the vertical axis, used only
+     during the pirouette so the body reads as rounded from every angle, not a flat card */
+  .volume{
     position: absolute;
     inset: 0;
     width: 100%; height: 100%;
-    transform: translateZ(-15px) scale(0.9);
-    opacity: 0.85;
+    transform-style: preserve-3d;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.12s ease;
+  }
+  .tilt3d.pirouetting .volume{ opacity: 1; }
+  .blade{
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    backface-visibility: hidden;
+  }
+  .tail-counter{
+    transform-origin: 100px 90px;
+  }
+  .facing.facing-left .tail-counter{
+    transform: scaleX(-1);
   }
   .tail{
     animation: tail-sway 2.2s ease-in-out infinite alternate;
@@ -455,19 +473,77 @@
         <div class="breathe" id="breathe">
         <div class="squash" id="squash">
         <div class="tilt3d" id="tilt3d">
-          <svg class="thickness" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <ellipse cx="102" cy="118" rx="58" ry="42" fill="var(--cat-shade)"></ellipse>
-            <circle cx="102" cy="78" r="46" fill="var(--cat-shade)"></circle>
-            <circle cx="70" cy="60" r="14" fill="var(--cat-shade)"></circle>
-            <circle cx="134" cy="60" r="14" fill="var(--cat-shade)"></circle>
-            <ellipse cx="76" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
-            <ellipse cx="128" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
-          </svg>
+          <div class="volume" id="volume" aria-hidden="true">
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(30deg);">
+              <ellipse cx="102" cy="118" rx="58" ry="42" fill="var(--cat-white)"></ellipse>
+              <circle cx="102" cy="78" r="46" fill="var(--cat-white)"></circle>
+              <circle cx="70" cy="60" r="14" fill="var(--cat-white)"></circle>
+              <circle cx="134" cy="60" r="14" fill="var(--cat-white)"></circle>
+              <ellipse cx="76" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="128" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
+            </svg>
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(60deg);">
+              <ellipse cx="102" cy="118" rx="56" ry="41" fill="var(--cat-white)"></ellipse>
+              <circle cx="102" cy="78" r="44" fill="var(--cat-white)"></circle>
+              <ellipse cx="76" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="128" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
+            </svg>
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(90deg);">
+              <ellipse cx="102" cy="118" rx="52" ry="40" fill="var(--cat-shade)"></ellipse>
+              <circle cx="102" cy="78" r="41" fill="var(--cat-shade)"></circle>
+              <ellipse cx="76" cy="158" rx="11" ry="15" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="128" cy="158" rx="11" ry="15" fill="var(--cat-shade)"></ellipse>
+            </svg>
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(120deg);">
+              <ellipse cx="102" cy="118" rx="49" ry="38" fill="var(--cat-shade)"></ellipse>
+              <circle cx="102" cy="78" r="38" fill="var(--cat-shade)"></circle>
+            </svg>
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(150deg);">
+              <ellipse cx="102" cy="118" rx="46" ry="36" fill="var(--cat-shade)"></ellipse>
+              <circle cx="102" cy="78" r="36" fill="var(--cat-shade)"></circle>
+            </svg>
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(180deg);">
+              <ellipse cx="102" cy="118" rx="45" ry="35" fill="var(--cat-shade)"></ellipse>
+              <circle cx="102" cy="78" r="35" fill="var(--cat-shade)"></circle>
+              <circle cx="70" cy="60" r="11" fill="var(--cat-shade)"></circle>
+              <circle cx="134" cy="60" r="11" fill="var(--cat-shade)"></circle>
+            </svg>
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(210deg);">
+              <ellipse cx="102" cy="118" rx="46" ry="36" fill="var(--cat-shade)"></ellipse>
+              <circle cx="102" cy="78" r="36" fill="var(--cat-shade)"></circle>
+            </svg>
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(240deg);">
+              <ellipse cx="102" cy="118" rx="49" ry="38" fill="var(--cat-shade)"></ellipse>
+              <circle cx="102" cy="78" r="38" fill="var(--cat-shade)"></circle>
+            </svg>
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(270deg);">
+              <ellipse cx="102" cy="118" rx="52" ry="40" fill="var(--cat-shade)"></ellipse>
+              <circle cx="102" cy="78" r="41" fill="var(--cat-shade)"></circle>
+              <ellipse cx="76" cy="158" rx="11" ry="15" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="128" cy="158" rx="11" ry="15" fill="var(--cat-shade)"></ellipse>
+            </svg>
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(300deg);">
+              <ellipse cx="102" cy="118" rx="56" ry="41" fill="var(--cat-white)"></ellipse>
+              <circle cx="102" cy="78" r="44" fill="var(--cat-white)"></circle>
+              <ellipse cx="76" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="128" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
+            </svg>
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(330deg);">
+              <ellipse cx="102" cy="118" rx="58" ry="42" fill="var(--cat-white)"></ellipse>
+              <circle cx="102" cy="78" r="46" fill="var(--cat-white)"></circle>
+              <circle cx="70" cy="60" r="14" fill="var(--cat-white)"></circle>
+              <circle cx="134" cy="60" r="14" fill="var(--cat-white)"></circle>
+              <ellipse cx="76" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="128" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
+            </svg>
+          </div>
           <svg class="cat" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An illustration of a white Persian cat, leaping.">
-            <!-- tail -->
+            <!-- tail: wrapped in a counter-flip so it keeps swishing on the same side regardless of which way she's facing -->
+            <g class="tail-counter">
             <g class="tail">
               <path d="M148,120 C 178,110 190,72 172,44 C 160,26 140,30 138,48 C 150,52 158,72 150,90 C 145,102 150,112 148,120 Z" fill="var(--cat-white)"></path>
               <path d="M148,120 C 178,110 190,72 172,44" fill="none" stroke="var(--cat-shade)" stroke-width="2" stroke-linecap="round" opacity="0.5"></path>
+            </g>
             </g>
 
             <!-- royal wardrobe: cape (drawn behind the body so only its edges peek out) -->
@@ -523,8 +599,10 @@
 
             <g class="whisker">
               <path d="M64,90 C 46,86 34,86 22,84" stroke="var(--ink-soft)" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.55"></path>
+              <path d="M64,94 C 46,93 34,94 22,95" stroke="var(--ink-soft)" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.55"></path>
               <path d="M64,98 C 46,98 34,102 22,104" stroke="var(--ink-soft)" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.55"></path>
               <path d="M140,90 C 158,86 170,86 182,84" stroke="var(--ink-soft)" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.55"></path>
+              <path d="M140,94 C 158,93 170,94 182,95" stroke="var(--ink-soft)" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.55"></path>
               <path d="M140,98 C 158,98 170,102 182,104" stroke="var(--ink-soft)" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.55"></path>
             </g>
 
@@ -550,12 +628,6 @@
               <circle cx="118" cy="108" r="3" fill="#FFFDF8" stroke="var(--brass-soft)" stroke-width="0.8"></circle>
             </g>
 
-            <!-- royal wardrobe: cape clasp (crown drawn last so it sits above everything) -->
-            <g class="costume costume-cape">
-              <circle cx="102" cy="92" r="5" fill="var(--brass)"></circle>
-              <circle cx="102" cy="92" r="2" fill="var(--mauve)"></circle>
-            </g>
-
             <!-- royal wardrobe: crown -->
             <g class="costume costume-crown">
               <rect x="78" y="32" width="48" height="7" rx="2" fill="var(--brass)"></rect>
@@ -577,7 +649,7 @@
     <p class="caption" id="caption">She does not run. She is dispatched.</p>
     <div class="commands">
       <button class="cmd" id="leapBtn" type="button">Random Leap</button>
-      <button class="cmd" id="zoomiesBtn" type="button" aria-pressed="false">Zoomies</button>
+      <button class="cmd" id="zoomiesBtn" type="button" aria-pressed="false">Pounce and Flounce</button>
       <button class="cmd cmd-accent" id="pirouetteBtn" type="button">Pirouette</button>
     </div>
   </div>
@@ -793,6 +865,7 @@
       }
 
       busy = true;
+      tilt3d.classList.add("pirouetting");
       var duration = 1300;
       var startBottom = pos.bottom;
       var peakBottom = Math.min(MAX_BOTTOM, startBottom + 26);
@@ -820,6 +893,7 @@
       setTimeout(function(){
         rigAnim.cancel(); shadowAnim.cancel(); spinAnim.cancel();
         tilt3d.style.transform = "";
+        tilt3d.classList.remove("pirouetting");
         placeInstantly(pos.left, startBottom);
         spawnPuffsAt(pos.left, startBottom);
         busy = false;
@@ -829,7 +903,7 @@
     function stopZoomies(){
       if(!zoomiesActive) return;
       zoomiesActive = false;
-      zoomiesBtn.textContent = "Zoomies";
+      zoomiesBtn.textContent = "Pounce and Flounce";
       zoomiesBtn.setAttribute("aria-pressed", "false");
     }
 
@@ -851,7 +925,7 @@
     function startZoomies(){
       if(zoomiesActive) return;
       zoomiesActive = true;
-      zoomiesBtn.textContent = "Stop Zoomies";
+      zoomiesBtn.textContent = "Stop the Flounce";
       zoomiesBtn.setAttribute("aria-pressed", "true");
       zoomiesStep();
     }
