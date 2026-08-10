@@ -266,7 +266,7 @@
     transform-origin: 50% 50%;
   }
   .blade svg{ width: 100%; height: 100%; display: block; overflow: visible; }
-  #bladeBack{ opacity: 0; }
+  #bladeBack, #bladeSide, #bladeTop, #bladeBottom, #bladeTurn{ opacity: 0; }
   .tail-counter{
     transform-origin: 100px 90px;
   }
@@ -468,14 +468,125 @@
         <div class="tilt3d" id="tilt3d">
           <!-- back: the "other side" shown during the pirouette flip-card swap.
                Plain 2D content, no 3D transform -- see pirouette() for how it's used. -->
+          <!-- side/belly view: shown briefly mid-turn so the transition reads as a
+               round cat rotating, not a flat card swapping faces -->
+          <!-- top view: crown of the head and back, used mid-flip -->
+          <div class="blade" id="bladeTop" aria-hidden="true">
+            <svg viewBox="0 0 200 180">
+              <path d="M90,168 C 70,176 53,163 61,147 C 72,150 83,161 90,168 Z" fill="var(--cat-white)"></path>
+              <ellipse cx="102" cy="112" rx="60" ry="48" fill="var(--cat-white)"></ellipse>
+              <circle cx="48" cy="102" r="20" fill="var(--cat-white)"></circle>
+              <circle cx="156" cy="102" r="20" fill="var(--cat-white)"></circle>
+              <circle cx="60" cy="142" r="18" fill="var(--cat-white)"></circle>
+              <circle cx="144" cy="142" r="18" fill="var(--cat-white)"></circle>
+              <circle cx="102" cy="154" r="20" fill="var(--cat-white)"></circle>
+              <circle cx="102" cy="66" r="24" fill="var(--cat-white)"></circle>
+              <ellipse cx="102" cy="100" rx="18" ry="42" fill="var(--cat-shade)" opacity="0.22"></ellipse>
+              <path d="M64,58 C 58,36 66,24 78,30 C 82,42 80,54 76,64 Z" fill="var(--cat-white)"></path>
+              <path d="M140,58 C 146,36 138,24 126,30 C 122,42 124,54 128,64 Z" fill="var(--cat-white)"></path>
+              <path d="M68,54 C 65,42 69,34 76,37 C 78,44 77,50 74,56 Z" fill="var(--mauve)" opacity="0.4"></path>
+              <path d="M136,54 C 139,42 135,34 128,37 C 126,44 127,50 130,56 Z" fill="var(--mauve)" opacity="0.4"></path>
+            </svg>
+          </div>
+          <!-- bottom view: belly and paws, used mid-flip -->
+          <div class="blade" id="bladeBottom" aria-hidden="true">
+            <svg viewBox="0 0 200 180">
+              <ellipse cx="102" cy="112" rx="58" ry="46" fill="var(--cat-white)"></ellipse>
+              <ellipse cx="102" cy="118" rx="30" ry="20" fill="var(--cat-shade)" opacity="0.3"></ellipse>
+              <ellipse cx="48" cy="86" rx="15" ry="19" fill="var(--cat-white)"></ellipse>
+              <ellipse cx="156" cy="86" rx="15" ry="19" fill="var(--cat-white)"></ellipse>
+              <ellipse cx="52" cy="150" rx="15" ry="19" fill="var(--cat-white)"></ellipse>
+              <ellipse cx="152" cy="150" rx="15" ry="19" fill="var(--cat-white)"></ellipse>
+              <ellipse cx="48" cy="96" rx="10" ry="6" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="156" cy="96" rx="10" ry="6" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="52" cy="160" rx="10" ry="6" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="152" cy="160" rx="10" ry="6" fill="var(--cat-shade)"></ellipse>
+              <path d="M100,66 C 96,58 100,52 106,55 C 108,60 106,65 102,68 Z" fill="var(--mauve)" opacity="0.35"></path>
+            </svg>
+          </div>
+          <!-- transitional 3/4-turned view, shown briefly at every handoff between the
+               main poses so the turn passes through an extra angle instead of jump-cutting -->
+          <!-- faceless on purpose: during the blend the front pose's own face fades out
+               naturally as this fades in underneath, so there's no mismatched half-face -->
+          <div class="blade" id="bladeTurn" aria-hidden="true">
+            <svg viewBox="0 0 200 180">
+              <ellipse cx="104" cy="118" rx="57" ry="42" fill="var(--cat-white)"></ellipse>
+              <circle cx="56" cy="128" r="20" fill="var(--cat-white)"></circle>
+              <circle cx="50" cy="104" r="16" fill="var(--cat-white)"></circle>
+              <circle cx="152" cy="128" r="20" fill="var(--cat-white)"></circle>
+              <circle cx="158" cy="104" r="15" fill="var(--cat-white)"></circle>
+              <circle cx="68" cy="150" r="17" fill="var(--cat-white)"></circle>
+              <circle cx="140" cy="150" r="17" fill="var(--cat-white)"></circle>
+              <circle cx="104" cy="158" r="18" fill="var(--cat-white)"></circle>
+              <ellipse cx="104" cy="132" rx="33" ry="18" fill="var(--cat-shade)" opacity="0.32"></ellipse>
+              <ellipse cx="78" cy="158" rx="13" ry="17" fill="var(--cat-white)"></ellipse>
+              <ellipse cx="130" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
+              <path d="M146,58 C 152,36 144,24 132,30 C 128,42 130,54 134,64 Z" fill="var(--cat-white)"></path>
+              <path d="M68,58 C 62,36 70,24 82,30 C 86,42 84,54 80,64 Z" fill="var(--cat-white)"></path>
+              <circle cx="104" cy="78" r="46" fill="var(--cat-white)"></circle>
+              <circle cx="58" cy="86" r="18" fill="var(--cat-white)"></circle>
+              <circle cx="150" cy="86" r="18" fill="var(--cat-white)"></circle>
+              <circle cx="64" cy="104" r="16" fill="var(--cat-white)"></circle>
+              <circle cx="144" cy="104" r="16" fill="var(--cat-white)"></circle>
+              <circle cx="104" cy="112" r="18" fill="var(--cat-white)"></circle>
+              <ellipse cx="104" cy="86" rx="12" ry="9" fill="var(--cat-shade)" opacity="0.35"></ellipse>
+            </svg>
+          </div>
+          <div class="blade" id="bladeSide" aria-hidden="true">
+            <svg viewBox="0 0 200 180">
+              <ellipse cx="112" cy="140" rx="36" ry="14" fill="var(--cat-shade)" opacity="0.32"></ellipse>
+              <path d="M176,122 C 198,108 199,68 176,48 C 165,39 149,44 151,60 C 163,64 170,86 159,107 C 155,114 166,119 176,122 Z" fill="var(--cat-white)"></path>
+              <ellipse cx="118" cy="112" rx="57" ry="48" fill="var(--cat-white)"></ellipse>
+              <circle cx="168" cy="118" r="22" fill="var(--cat-white)"></circle>
+              <circle cx="60" cy="128" r="21" fill="var(--cat-white)"></circle>
+              <circle cx="100" cy="155" r="20" fill="var(--cat-white)"></circle>
+              <circle cx="142" cy="156" r="19" fill="var(--cat-white)"></circle>
+              <ellipse cx="145" cy="160" rx="15" ry="19" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="57" cy="157" rx="14" ry="19" fill="var(--cat-white)"></ellipse>
+              <ellipse cx="57" cy="167" rx="10" ry="6" fill="var(--cat-shade)"></ellipse>
+              <circle cx="56" cy="80" r="37" fill="var(--cat-white)"></circle>
+              <circle cx="30" cy="92" r="16" fill="var(--cat-white)"></circle>
+              <circle cx="46" cy="52" r="14" fill="var(--cat-white)"></circle>
+              <path d="M40,52 C 35,32 44,21 55,28 C 58,39 55,50 50,58 Z" fill="var(--cat-white)"></path>
+              <path d="M43,48 C 41,37 45,30 51,34 C 52,40 51,45 48,50 Z" fill="var(--mauve)" opacity="0.5"></path>
+              <path d="M20,86 C 10,84 2,84 -6,83" stroke="var(--ink-soft)" stroke-width="1.3" fill="none" stroke-linecap="round" opacity="0.5"></path>
+              <path d="M20,90 C 10,89 2,90 -6,91" stroke="var(--ink-soft)" stroke-width="1.3" fill="none" stroke-linecap="round" opacity="0.5"></path>
+              <path d="M20,93 C 10,94 2,97 -6,99" stroke="var(--ink-soft)" stroke-width="1.3" fill="none" stroke-linecap="round" opacity="0.5"></path>
+              <ellipse cx="34" cy="78" rx="9" ry="10" fill="var(--brass)"></ellipse>
+              <ellipse cx="35" cy="80" rx="4.6" ry="6" fill="var(--plum)"></ellipse>
+              <circle cx="32.5" cy="76" r="1.4" fill="#fff"></circle>
+              <path d="M13,90 L20,90 L15,95 Z" fill="var(--mauve)"></path>
+            </svg>
+          </div>
           <div class="blade" id="bladeBack" aria-hidden="true">
             <svg viewBox="0 0 200 180">
-              <ellipse cx="102" cy="118" rx="58" ry="42" fill="var(--cat-shade)"></ellipse>
-              <circle cx="102" cy="78" r="46" fill="var(--cat-shade)"></circle>
-              <circle cx="70" cy="60" r="14" fill="var(--cat-shade)"></circle>
-              <circle cx="134" cy="60" r="14" fill="var(--cat-shade)"></circle>
-              <ellipse cx="76" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
-              <ellipse cx="128" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
+              <path d="M126,138 C 148,132 162,102 150,72 C 144,58 124,60 122,76 C 134,80 141,100 132,118 C 128,128 122,134 126,138 Z" fill="var(--cat-white)"></path>
+              <path d="M126,138 C 148,132 162,102 150,72" fill="none" stroke="var(--cat-shade)" stroke-width="2" stroke-linecap="round" opacity="0.5"></path>
+              <ellipse cx="72" cy="150" rx="16" ry="20" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="130" cy="150" rx="16" ry="20" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="102" cy="118" rx="58" ry="42" fill="var(--cat-white)"></ellipse>
+              <circle cx="54" cy="128" r="20" fill="var(--cat-white)"></circle>
+              <circle cx="48" cy="104" r="16" fill="var(--cat-white)"></circle>
+              <circle cx="150" cy="128" r="20" fill="var(--cat-white)"></circle>
+              <circle cx="156" cy="104" r="15" fill="var(--cat-white)"></circle>
+              <circle cx="66" cy="150" r="17" fill="var(--cat-white)"></circle>
+              <circle cx="138" cy="150" r="17" fill="var(--cat-white)"></circle>
+              <circle cx="102" cy="158" r="18" fill="var(--cat-white)"></circle>
+              <ellipse cx="102" cy="132" rx="34" ry="18" fill="var(--cat-shade)" opacity="0.35"></ellipse>
+              <ellipse cx="76" cy="158" rx="13" ry="17" fill="var(--cat-white)"></ellipse>
+              <ellipse cx="128" cy="158" rx="13" ry="17" fill="var(--cat-white)"></ellipse>
+              <ellipse cx="76" cy="168" rx="10" ry="6" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="128" cy="168" rx="10" ry="6" fill="var(--cat-shade)"></ellipse>
+              <path d="M64,58 C 58,36 66,24 78,30 C 82,42 80,54 76,64 Z" fill="var(--cat-white)"></path>
+              <path d="M140,58 C 146,36 138,24 126,30 C 122,42 124,54 128,64 Z" fill="var(--cat-white)"></path>
+              <circle cx="102" cy="78" r="46" fill="var(--cat-white)"></circle>
+              <circle cx="56" cy="86" r="18" fill="var(--cat-white)"></circle>
+              <circle cx="148" cy="86" r="18" fill="var(--cat-white)"></circle>
+              <circle cx="62" cy="104" r="16" fill="var(--cat-white)"></circle>
+              <circle cx="142" cy="104" r="16" fill="var(--cat-white)"></circle>
+              <circle cx="70" cy="60" r="14" fill="var(--cat-white)"></circle>
+              <circle cx="134" cy="60" r="14" fill="var(--cat-white)"></circle>
+              <circle cx="102" cy="112" r="18" fill="var(--cat-white)"></circle>
             </svg>
           </div>
           <div class="blade" id="bladeFront">
@@ -646,7 +757,11 @@
     var tilt3d = document.getElementById("tilt3d");
     var catSvg = document.querySelector("svg.cat");
     var bladeFront = document.getElementById("bladeFront");
+    var bladeSide = document.getElementById("bladeSide");
+    var bladeTop = document.getElementById("bladeTop");
+    var bladeBottom = document.getElementById("bladeBottom");
     var bladeBack = document.getElementById("bladeBack");
+    var bladeTurn = document.getElementById("bladeTurn");
     var captionEl = document.getElementById("caption");
     var leapBtn = document.getElementById("leapBtn");
     var zoomiesBtn = document.getElementById("zoomiesBtn");
@@ -814,49 +929,80 @@
       var startBottom = pos.bottom;
       var peakBottom = Math.min(MAX_BOTTOM, startBottom + 26);
 
-      // "Flip card" illusion: squish the visible layer down to a sliver with a plain
-      // 2D scale, swap which layer is opaque at the exact moment it's edge-on (and
-      // therefore imperceptibly thin), then un-squish the other side. Spin phase
-      // squishes horizontally (scaleX), flip phase squishes vertically (scaleY).
-      // This uses only ordinary 2D transforms and opacity -- no perspective, no
-      // preserve-3d, no backface-visibility -- so there's no dependence on a
-      // browser's 3D compositing to keep the body looking solid.
+      // "Flip card" illusion done with plain 2D scale + opacity (no CSS 3D transforms --
+      // those proved unreliable across browsers). Width never collapses to a thin sliver;
+      // it dips to a floor of 0.65 and, right at that dip, swaps to an actual illustrated
+      // side/top/bottom drawing, so the turn always shows a real, recognizable, opaque
+      // view of the cat rather than a flat card vanishing edge-on. Spin phase (Y) shows
+      // front -> side -> back -> side -> front; flip phase (X) shows
+      // front -> top -> back -> bottom -> front.
       var yPhase = 0.45;
       var DEG = Math.PI / 180;
 
-      // Dense sampling matters here: the opacity swap has to land while the shape is
-      // genuinely near-zero width, or the two layers blend at a visible size instead
-      // of an imperceptible sliver. Coarser sampling (originally 28) let the true
-      // crossover fall between keyframes, leaving a real see-through gap.
+      // Every pose (front/turn/side.../back) is placed at a center angle around the
+      // circle and given a smooth cosine "bump" of influence; at any given moment the
+      // 1-3 nearest poses are blended (normalized so they always sum to 1), so the
+      // rotation continuously morphs between illustrations instead of hard-cutting
+      // between them -- a swap, however well-timed, always pops.
+      function angDist(a, b){
+        var d = Math.abs(a - b) % 360;
+        return d > 180 ? 360 - d : d;
+      }
+      function poseWeights(angle, isFlipPhase){
+        var mid = isFlipPhase ? "top" : "side";
+        var mid2 = isFlipPhase ? "bottom" : "side";
+        var centers = [
+          ["front", 0], ["turn", 45], [mid, 90], ["turn", 135],
+          ["back", 180], ["turn", 225], [mid2, 270], ["turn", 315], ["front", 360]
+        ];
+        var halfWidth = 50;
+        var raw = { front: 0, turn: 0, side: 0, top: 0, bottom: 0, back: 0 };
+        var total = 0;
+        for(var k = 0; k < centers.length; k++){
+          var name = centers[k][0], center = centers[k][1];
+          var d = angDist(angle, center);
+          var w = d < halfWidth ? 0.5 * (1 + Math.cos(Math.PI * d / halfWidth)) : 0;
+          raw[name] += w;
+          total += w;
+        }
+        if(total <= 0.0001) total = 1;
+        return { front: raw.front / total, turn: raw.turn / total, side: raw.side / total, top: raw.top / total, bottom: raw.bottom / total, back: raw.back / total };
+      }
+
       var N = 200;
-      var rigFrames = [], shadowFrames = [], tiltFrames = [], frontFrames = [], backFrames = [];
+      var rigFrames = [], shadowFrames = [], tiltFrames = [];
+      var frontFrames = [], sideFrames = [], topFrames = [], bottomFrames = [], backFrames = [], turnFrames = [];
       for(var i = 0; i <= N; i++){
         var t = i / N;
         var y = quadBezier(startBottom, peakBottom, startBottom, t);
         var height = Math.max(0, y - startBottom);
         var shrink = clamp(height / (peakBottom - startBottom || 1), 0, 1);
         var lean = 8 * Math.sin(t * Math.PI);
-        var angle, cosVal, scaleMag, axis;
+        var angle, axis, isFlipPhase;
         if(t <= yPhase){
           angle = 360 * (t / yPhase);
           axis = "X";
+          isFlipPhase = false;
         } else {
           angle = 360 * ((t - yPhase) / (1 - yPhase));
           axis = "Y";
+          isFlipPhase = true;
         }
-        cosVal = Math.cos(angle * DEG);
-        scaleMag = Math.abs(cosVal);
-        var frontOp = cosVal >= 0 ? 1 : 0;
-        var backOp = 1 - frontOp;
+        var width = 0.65 + 0.35 * Math.abs(Math.cos(angle * DEG));
+        var w = poseWeights(angle, isFlipPhase);
 
         rigFrames.push({ bottom: y + "%", offset: t });
         shadowFrames.push({ transform: "scale(" + (1 - shrink * 0.72) + ")", opacity: (0.5 - shrink * 0.4), offset: t });
         tiltFrames.push({
-          transform: "scale" + axis + "(" + scaleMag.toFixed(3) + ") rotate(" + lean.toFixed(2) + "deg)",
+          transform: "scale" + axis + "(" + width.toFixed(3) + ") rotate(" + lean.toFixed(2) + "deg)",
           offset: t
         });
-        frontFrames.push({ opacity: frontOp, offset: t });
-        backFrames.push({ opacity: backOp, offset: t });
+        frontFrames.push({ opacity: w.front, offset: t });
+        sideFrames.push({ opacity: w.side, offset: t });
+        topFrames.push({ opacity: w.top, offset: t });
+        bottomFrames.push({ opacity: w.bottom, offset: t });
+        backFrames.push({ opacity: w.back, offset: t });
+        turnFrames.push({ opacity: w.turn, offset: t });
       }
 
       var timing = { duration: duration, easing: "linear", fill: "forwards" };
@@ -864,10 +1010,14 @@
       var shadowAnim = shadow.animate(shadowFrames, timing);
       var tiltAnim = tilt3d.animate(tiltFrames, timing);
       var frontAnim = bladeFront.animate(frontFrames, timing);
+      var sideAnim = bladeSide.animate(sideFrames, timing);
+      var topAnim = bladeTop.animate(topFrames, timing);
+      var bottomAnim = bladeBottom.animate(bottomFrames, timing);
       var backAnim = bladeBack.animate(backFrames, timing);
+      var turnAnim = bladeTurn.animate(turnFrames, timing);
 
       setTimeout(function(){
-        [rigAnim, shadowAnim, tiltAnim, frontAnim, backAnim].forEach(function(a){ a.cancel(); });
+        [rigAnim, shadowAnim, tiltAnim, frontAnim, sideAnim, topAnim, bottomAnim, backAnim, turnAnim].forEach(function(a){ a.cancel(); });
         placeInstantly(pos.left, startBottom);
         spawnPuffsAt(pos.left, startBottom);
         busy = false;
