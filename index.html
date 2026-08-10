@@ -233,17 +233,20 @@
     width: 100%; height: 100%;
     transform: scaleX(1);
     transform-origin: 50% 85%;
+    transform-style: preserve-3d;
   }
   .facing.facing-left{ transform: scaleX(-1); }
   .breathe{
     width: 100%; height: 100%;
     animation: idle-bob 2.6s ease-in-out infinite alternate;
     transform-origin: 50% 100%;
+    transform-style: preserve-3d;
   }
   .squash{
     width: 100%; height: 100%;
     transform-origin: 50% 92%;
     will-change: transform;
+    transform-style: preserve-3d;
   }
   .tilt3d{
     position: relative;
@@ -454,7 +457,7 @@
 
   <p class="eyebrow">Exhibit No. 1 — Portraiture in Motion</p>
   <h1>Her Grace, <em>Airborne</em></h1>
-  <p class="dek">A white Persian of considerable dignity and no impulse control. Click anywhere on the stage to choose where she lands, or give her a command below.</p>
+  <p class="dek">A white Persian of considerable dignity and charm. Click anywhere on the stage to choose where she lands, or give her a command below.</p>
 
   <div class="stage-frame">
     <div class="stage" id="stage">
@@ -474,65 +477,38 @@
         <div class="squash" id="squash">
         <div class="tilt3d" id="tilt3d">
           <div class="volume" id="volume" aria-hidden="true">
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(30deg);">
-              <ellipse cx="102" cy="118" rx="58" ry="42" fill="var(--cat-white)"></ellipse>
-              <circle cx="102" cy="78" r="46" fill="var(--cat-white)"></circle>
-              <circle cx="70" cy="60" r="14" fill="var(--cat-white)"></circle>
-              <circle cx="134" cy="60" r="14" fill="var(--cat-white)"></circle>
-              <ellipse cx="76" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
-              <ellipse cx="128" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
-            </svg>
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(60deg);">
-              <ellipse cx="102" cy="118" rx="56" ry="41" fill="var(--cat-white)"></ellipse>
-              <circle cx="102" cy="78" r="44" fill="var(--cat-white)"></circle>
-              <ellipse cx="76" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
-              <ellipse cx="128" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
-            </svg>
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(90deg);">
-              <ellipse cx="102" cy="118" rx="52" ry="40" fill="var(--cat-shade)"></ellipse>
-              <circle cx="102" cy="78" r="41" fill="var(--cat-shade)"></circle>
-              <ellipse cx="76" cy="158" rx="11" ry="15" fill="var(--cat-shade)"></ellipse>
-              <ellipse cx="128" cy="158" rx="11" ry="15" fill="var(--cat-shade)"></ellipse>
-            </svg>
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(120deg);">
-              <ellipse cx="102" cy="118" rx="49" ry="38" fill="var(--cat-shade)"></ellipse>
-              <circle cx="102" cy="78" r="38" fill="var(--cat-shade)"></circle>
-            </svg>
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(150deg);">
-              <ellipse cx="102" cy="118" rx="46" ry="36" fill="var(--cat-shade)"></ellipse>
-              <circle cx="102" cy="78" r="36" fill="var(--cat-shade)"></circle>
-            </svg>
+            <!-- back: faces opposite the front cat -->
             <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(180deg);">
-              <ellipse cx="102" cy="118" rx="45" ry="35" fill="var(--cat-shade)"></ellipse>
-              <circle cx="102" cy="78" r="35" fill="var(--cat-shade)"></circle>
-              <circle cx="70" cy="60" r="11" fill="var(--cat-shade)"></circle>
-              <circle cx="134" cy="60" r="11" fill="var(--cat-shade)"></circle>
-            </svg>
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(210deg);">
-              <ellipse cx="102" cy="118" rx="46" ry="36" fill="var(--cat-shade)"></ellipse>
-              <circle cx="102" cy="78" r="36" fill="var(--cat-shade)"></circle>
-            </svg>
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(240deg);">
-              <ellipse cx="102" cy="118" rx="49" ry="38" fill="var(--cat-shade)"></ellipse>
-              <circle cx="102" cy="78" r="38" fill="var(--cat-shade)"></circle>
-            </svg>
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(270deg);">
-              <ellipse cx="102" cy="118" rx="52" ry="40" fill="var(--cat-shade)"></ellipse>
-              <circle cx="102" cy="78" r="41" fill="var(--cat-shade)"></circle>
-              <ellipse cx="76" cy="158" rx="11" ry="15" fill="var(--cat-shade)"></ellipse>
-              <ellipse cx="128" cy="158" rx="11" ry="15" fill="var(--cat-shade)"></ellipse>
-            </svg>
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(300deg);">
-              <ellipse cx="102" cy="118" rx="56" ry="41" fill="var(--cat-white)"></ellipse>
-              <circle cx="102" cy="78" r="44" fill="var(--cat-white)"></circle>
+              <ellipse cx="102" cy="118" rx="56" ry="41" fill="var(--cat-shade)"></ellipse>
+              <circle cx="102" cy="78" r="45" fill="var(--cat-shade)"></circle>
+              <circle cx="70" cy="60" r="13" fill="var(--cat-shade)"></circle>
+              <circle cx="134" cy="60" r="13" fill="var(--cat-shade)"></circle>
               <ellipse cx="76" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
               <ellipse cx="128" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
             </svg>
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(330deg);">
-              <ellipse cx="102" cy="118" rx="58" ry="42" fill="var(--cat-white)"></ellipse>
-              <circle cx="102" cy="78" r="46" fill="var(--cat-white)"></circle>
-              <circle cx="70" cy="60" r="14" fill="var(--cat-white)"></circle>
-              <circle cx="134" cy="60" r="14" fill="var(--cat-white)"></circle>
+            <!-- right side -->
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(90deg);">
+              <ellipse cx="102" cy="118" rx="50" ry="41" fill="var(--cat-shade)"></ellipse>
+              <circle cx="102" cy="78" r="42" fill="var(--cat-shade)"></circle>
+              <ellipse cx="76" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="128" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
+            </svg>
+            <!-- left side -->
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(270deg);">
+              <ellipse cx="102" cy="118" rx="50" ry="41" fill="var(--cat-shade)"></ellipse>
+              <circle cx="102" cy="78" r="42" fill="var(--cat-shade)"></circle>
+              <ellipse cx="76" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="128" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
+            </svg>
+            <!-- top -->
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateX(90deg);">
+              <ellipse cx="102" cy="98" rx="54" ry="46" fill="var(--cat-white)"></ellipse>
+              <circle cx="70" cy="70" r="12" fill="var(--cat-white)"></circle>
+              <circle cx="134" cy="70" r="12" fill="var(--cat-white)"></circle>
+            </svg>
+            <!-- bottom -->
+            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateX(270deg);">
+              <ellipse cx="102" cy="138" rx="50" ry="40" fill="var(--cat-shade)"></ellipse>
               <ellipse cx="76" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
               <ellipse cx="128" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
             </svg>
@@ -870,17 +846,30 @@
       var startBottom = pos.bottom;
       var peakBottom = Math.min(MAX_BOTTOM, startBottom + 26);
 
-      var N = 24, rigFrames = [], shadowFrames = [], spinFrames = [];
+      // Rotate one axis at a time (spin around Y, then flip around X) rather than blending
+      // all three simultaneously -- the flat "orthogonal cross" panels that fake volume only
+      // add up to a solid body when the object turns around one axis at a time; compound
+      // multi-axis rotation makes them fan apart into visibly separate, gappy pieces.
+      var yPhase = 0.45;
+      var N = 28, rigFrames = [], shadowFrames = [], spinFrames = [];
       for(var i = 0; i <= N; i++){
         var t = i / N;
         var y = quadBezier(startBottom, peakBottom, startBottom, t);
         var height = Math.max(0, y - startBottom);
         var shrink = clamp(height / (peakBottom - startBottom || 1), 0, 1);
-        var depth = 34 * Math.sin(t * Math.PI);
+        var depth = 30 * Math.sin(t * Math.PI);
+        var rotY, rotX;
+        if(t <= yPhase){
+          rotY = 360 * (t / yPhase);
+          rotX = 0;
+        } else {
+          rotY = 360;
+          rotX = -360 * ((t - yPhase) / (1 - yPhase));
+        }
         rigFrames.push({ bottom: y + "%", offset: t });
         shadowFrames.push({ transform: "scale(" + (1 - shrink * 0.72) + ")", opacity: (0.5 - shrink * 0.4), offset: t });
         spinFrames.push({
-          transform: "translateZ(" + depth.toFixed(1) + "px) rotateX(" + (-360 * t).toFixed(1) + "deg) rotateY(" + (720 * t).toFixed(1) + "deg) rotateZ(" + (360 * t).toFixed(1) + "deg)",
+          transform: "translateZ(" + depth.toFixed(1) + "px) rotateY(" + rotY.toFixed(1) + "deg) rotateX(" + rotX.toFixed(1) + "deg)",
           offset: t
         });
       }
