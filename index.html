@@ -257,26 +257,25 @@
   .cat{
     width: 100%; height: 100%; display:block;
     overflow: visible;
-    backface-visibility: hidden;
   }
-  /* volume: a "lathe of blades" arranged radially around the vertical axis, used only
-     during the pirouette so the body reads as rounded from every angle, not a flat card */
+  /* volume: six opaque panels (front/back/left/right/top/bottom) that stand in for a
+     rounded body during the pirouette. Visibility is computed and driven directly in JS
+     (see pirouette()) rather than left to the browser's 3D backface culling, which is
+     inconsistent across browsers -- especially for SVG content inside preserve-3d. */
   .volume{
     position: absolute;
     inset: 0;
     width: 100%; height: 100%;
     transform-style: preserve-3d;
-    opacity: 0;
     pointer-events: none;
-    transition: opacity 0.12s ease;
   }
-  .tilt3d.pirouetting .volume{ opacity: 1; }
   .blade{
     position: absolute;
     inset: 0;
     width: 100%; height: 100%;
-    backface-visibility: hidden;
   }
+  .blade svg{ width: 100%; height: 100%; display: block; overflow: visible; }
+  .volume .blade{ opacity: 0; }
   .tail-counter{
     transform-origin: 100px 90px;
   }
@@ -478,41 +477,52 @@
         <div class="tilt3d" id="tilt3d">
           <div class="volume" id="volume" aria-hidden="true">
             <!-- back: faces opposite the front cat -->
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(180deg);">
-              <ellipse cx="102" cy="118" rx="56" ry="41" fill="var(--cat-shade)"></ellipse>
-              <circle cx="102" cy="78" r="45" fill="var(--cat-shade)"></circle>
-              <circle cx="70" cy="60" r="13" fill="var(--cat-shade)"></circle>
-              <circle cx="134" cy="60" r="13" fill="var(--cat-shade)"></circle>
-              <ellipse cx="76" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
-              <ellipse cx="128" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
-            </svg>
+            <div class="blade" id="bladeBack" style="transform: rotateY(180deg);">
+              <svg viewBox="0 0 200 180">
+                <ellipse cx="102" cy="118" rx="56" ry="41" fill="var(--cat-shade)"></ellipse>
+                <circle cx="102" cy="78" r="45" fill="var(--cat-shade)"></circle>
+                <circle cx="70" cy="60" r="13" fill="var(--cat-shade)"></circle>
+                <circle cx="134" cy="60" r="13" fill="var(--cat-shade)"></circle>
+                <ellipse cx="76" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
+                <ellipse cx="128" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
+              </svg>
+            </div>
             <!-- right side -->
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(90deg);">
-              <ellipse cx="102" cy="118" rx="50" ry="41" fill="var(--cat-shade)"></ellipse>
-              <circle cx="102" cy="78" r="42" fill="var(--cat-shade)"></circle>
-              <ellipse cx="76" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
-              <ellipse cx="128" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
-            </svg>
+            <div class="blade" id="bladeRight" style="transform: rotateY(90deg);">
+              <svg viewBox="0 0 200 180">
+                <ellipse cx="102" cy="118" rx="50" ry="41" fill="var(--cat-shade)"></ellipse>
+                <circle cx="102" cy="78" r="42" fill="var(--cat-shade)"></circle>
+                <ellipse cx="76" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
+                <ellipse cx="128" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
+              </svg>
+            </div>
             <!-- left side -->
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateY(270deg);">
-              <ellipse cx="102" cy="118" rx="50" ry="41" fill="var(--cat-shade)"></ellipse>
-              <circle cx="102" cy="78" r="42" fill="var(--cat-shade)"></circle>
-              <ellipse cx="76" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
-              <ellipse cx="128" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
-            </svg>
+            <div class="blade" id="bladeLeft" style="transform: rotateY(270deg);">
+              <svg viewBox="0 0 200 180">
+                <ellipse cx="102" cy="118" rx="50" ry="41" fill="var(--cat-shade)"></ellipse>
+                <circle cx="102" cy="78" r="42" fill="var(--cat-shade)"></circle>
+                <ellipse cx="76" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
+                <ellipse cx="128" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
+              </svg>
+            </div>
             <!-- top -->
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateX(90deg);">
-              <ellipse cx="102" cy="98" rx="54" ry="46" fill="var(--cat-white)"></ellipse>
-              <circle cx="70" cy="70" r="12" fill="var(--cat-white)"></circle>
-              <circle cx="134" cy="70" r="12" fill="var(--cat-white)"></circle>
-            </svg>
+            <div class="blade" id="bladeTop" style="transform: rotateX(90deg);">
+              <svg viewBox="0 0 200 180">
+                <ellipse cx="102" cy="98" rx="54" ry="46" fill="var(--cat-white)"></ellipse>
+                <circle cx="70" cy="70" r="12" fill="var(--cat-white)"></circle>
+                <circle cx="134" cy="70" r="12" fill="var(--cat-white)"></circle>
+              </svg>
+            </div>
             <!-- bottom -->
-            <svg class="blade" viewBox="0 0 200 180" style="transform: rotateX(270deg);">
-              <ellipse cx="102" cy="138" rx="50" ry="40" fill="var(--cat-shade)"></ellipse>
-              <ellipse cx="76" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
-              <ellipse cx="128" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
-            </svg>
+            <div class="blade" id="bladeBottom" style="transform: rotateX(270deg);">
+              <svg viewBox="0 0 200 180">
+                <ellipse cx="102" cy="138" rx="50" ry="40" fill="var(--cat-shade)"></ellipse>
+                <ellipse cx="76" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
+                <ellipse cx="128" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
+              </svg>
+            </div>
           </div>
+          <div class="blade" id="bladeFront">
           <svg class="cat" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An illustration of a white Persian cat, leaping.">
             <!-- tail: wrapped in a counter-flip so it keeps swishing on the same side regardless of which way she's facing -->
             <g class="tail-counter">
@@ -613,6 +623,7 @@
               <circle cx="116" cy="25" r="2.2" fill="var(--mauve)"></circle>
             </g>
           </svg>
+          </div>
         </div>
         </div>
         </div>
@@ -678,6 +689,12 @@
     var squashEl = document.getElementById("squash");
     var tilt3d = document.getElementById("tilt3d");
     var catSvg = document.querySelector("svg.cat");
+    var bladeFront = document.getElementById("bladeFront");
+    var bladeBack = document.getElementById("bladeBack");
+    var bladeRight = document.getElementById("bladeRight");
+    var bladeLeft = document.getElementById("bladeLeft");
+    var bladeTop = document.getElementById("bladeTop");
+    var bladeBottom = document.getElementById("bladeBottom");
     var captionEl = document.getElementById("caption");
     var leapBtn = document.getElementById("leapBtn");
     var zoomiesBtn = document.getElementById("zoomiesBtn");
@@ -851,36 +868,81 @@
       // add up to a solid body when the object turns around one axis at a time; compound
       // multi-axis rotation makes them fan apart into visibly separate, gappy pieces.
       var yPhase = 0.45;
-      var N = 28, rigFrames = [], shadowFrames = [], spinFrames = [];
+      var DEG = Math.PI / 180;
+      // Narrow crossfade band around the exact edge-on point, so panels swap
+      // over a couple of degrees instead of popping -- but never sit at a
+      // partial, see-through opacity for long.
+      function faceOpacity(z){
+        var band = 0.08;
+        return clamp((z + band) / (2 * band), 0, 1);
+      }
+
+      var N = 28;
+      var rigFrames = [], shadowFrames = [], spinFrames = [];
+      var frontFrames = [], backFrames = [], rightFrames = [], leftFrames = [], topFrames = [], bottomFrames = [];
       for(var i = 0; i <= N; i++){
         var t = i / N;
         var y = quadBezier(startBottom, peakBottom, startBottom, t);
         var height = Math.max(0, y - startBottom);
         var shrink = clamp(height / (peakBottom - startBottom || 1), 0, 1);
         var depth = 30 * Math.sin(t * Math.PI);
-        var rotY, rotX;
+        var rotY, rotX, angleRad;
+        var frontOp, backOp, rightOp, leftOp, topOp, bottomOp;
         if(t <= yPhase){
           rotY = 360 * (t / yPhase);
           rotX = 0;
+          angleRad = rotY * DEG;
+          frontOp = faceOpacity(Math.cos(angleRad));
+          backOp = faceOpacity(-Math.cos(angleRad));
+          rightOp = faceOpacity(-Math.sin(angleRad));
+          leftOp = faceOpacity(Math.sin(angleRad));
+          // top/bottom aren't in play during the Y-spin phase -- hard off,
+          // not run through faceOpacity (which treats z=0 as a 50% crossfade
+          // midpoint, not "inactive"), otherwise they'd sit stuck at 0.5.
+          topOp = 0;
+          bottomOp = 0;
         } else {
           rotY = 360;
           rotX = -360 * ((t - yPhase) / (1 - yPhase));
+          angleRad = rotX * DEG;
+          frontOp = faceOpacity(Math.cos(angleRad));
+          backOp = faceOpacity(-Math.cos(angleRad));
+          topOp = faceOpacity(-Math.sin(angleRad));
+          bottomOp = faceOpacity(Math.sin(angleRad));
+          rightOp = 0;
+          leftOp = 0;
         }
+
         rigFrames.push({ bottom: y + "%", offset: t });
         shadowFrames.push({ transform: "scale(" + (1 - shrink * 0.72) + ")", opacity: (0.5 - shrink * 0.4), offset: t });
         spinFrames.push({
           transform: "translateZ(" + depth.toFixed(1) + "px) rotateY(" + rotY.toFixed(1) + "deg) rotateX(" + rotX.toFixed(1) + "deg)",
           offset: t
         });
+        frontFrames.push({ opacity: frontOp, offset: t });
+        backFrames.push({ opacity: backOp, offset: t });
+        rightFrames.push({ opacity: rightOp, offset: t });
+        leftFrames.push({ opacity: leftOp, offset: t });
+        topFrames.push({ opacity: topOp, offset: t });
+        bottomFrames.push({ opacity: bottomOp, offset: t });
       }
 
-      var timing = { duration: duration, easing: "cubic-bezier(.4,0,.2,1)", fill: "forwards" };
+      // linear timing throughout so every animation samples the exact same
+      // progress at the exact same moment -- opacity must never drift out of
+      // sync with the rotation it's supposed to be masking.
+      var timing = { duration: duration, easing: "linear", fill: "forwards" };
       var rigAnim = rig.animate(rigFrames, timing);
       var shadowAnim = shadow.animate(shadowFrames, timing);
-      var spinAnim = tilt3d.animate(spinFrames, { duration: duration, easing: "ease-in-out", fill: "forwards" });
+      var spinAnim = tilt3d.animate(spinFrames, timing);
+      var frontAnim = bladeFront.animate(frontFrames, timing);
+      var backAnim = bladeBack.animate(backFrames, timing);
+      var rightAnim = bladeRight.animate(rightFrames, timing);
+      var leftAnim = bladeLeft.animate(leftFrames, timing);
+      var topAnim = bladeTop.animate(topFrames, timing);
+      var bottomAnim = bladeBottom.animate(bottomFrames, timing);
 
       setTimeout(function(){
-        rigAnim.cancel(); shadowAnim.cancel(); spinAnim.cancel();
+        [rigAnim, shadowAnim, spinAnim, frontAnim, backAnim, rightAnim, leftAnim, topAnim, bottomAnim].forEach(function(a){ a.cancel(); });
         tilt3d.style.transform = "";
         tilt3d.classList.remove("pirouetting");
         placeInstantly(pos.left, startBottom);
