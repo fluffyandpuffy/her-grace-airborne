@@ -225,7 +225,6 @@
     width: 168px;
     height: 148px;
     margin-left: -84px;
-    perspective: 320px;
     will-change: left, bottom;
     cursor: pointer;
   }
@@ -233,49 +232,41 @@
     width: 100%; height: 100%;
     transform: scaleX(1);
     transform-origin: 50% 85%;
-    transform-style: preserve-3d;
   }
   .facing.facing-left{ transform: scaleX(-1); }
   .breathe{
     width: 100%; height: 100%;
     animation: idle-bob 2.6s ease-in-out infinite alternate;
     transform-origin: 50% 100%;
-    transform-style: preserve-3d;
   }
   .squash{
     width: 100%; height: 100%;
     transform-origin: 50% 92%;
     will-change: transform;
-    transform-style: preserve-3d;
   }
+  /* tilt3d: despite the name this is a plain 2D transform stage now (a small lean
+     during normal leaps). The pirouette's "3D" turn is a flip-card illusion done
+     with scaleX/scaleY on the two .blade layers below -- see pirouette() -- which
+     sidesteps real CSS 3D transforms (preserve-3d/backface-visibility) entirely.
+     Those have inconsistent, sometimes-broken support for nested/SVG content
+     across browsers, which is what made the body look partly see-through. */
   .tilt3d{
     position: relative;
     width: 100%; height: 100%;
-    transform-style: preserve-3d;
     will-change: transform;
   }
   .cat{
     width: 100%; height: 100%; display:block;
     overflow: visible;
   }
-  /* volume: six opaque panels (front/back/left/right/top/bottom) that stand in for a
-     rounded body during the pirouette. Visibility is computed and driven directly in JS
-     (see pirouette()) rather than left to the browser's 3D backface culling, which is
-     inconsistent across browsers -- especially for SVG content inside preserve-3d. */
-  .volume{
-    position: absolute;
-    inset: 0;
-    width: 100%; height: 100%;
-    transform-style: preserve-3d;
-    pointer-events: none;
-  }
   .blade{
     position: absolute;
     inset: 0;
     width: 100%; height: 100%;
+    transform-origin: 50% 50%;
   }
   .blade svg{ width: 100%; height: 100%; display: block; overflow: visible; }
-  .volume .blade{ opacity: 0; }
+  #bladeBack{ opacity: 0; }
   .tail-counter{
     transform-origin: 100px 90px;
   }
@@ -475,52 +466,17 @@
         <div class="breathe" id="breathe">
         <div class="squash" id="squash">
         <div class="tilt3d" id="tilt3d">
-          <div class="volume" id="volume" aria-hidden="true">
-            <!-- back: faces opposite the front cat -->
-            <div class="blade" id="bladeBack" style="transform: rotateY(180deg);">
-              <svg viewBox="0 0 200 180">
-                <ellipse cx="102" cy="118" rx="56" ry="41" fill="var(--cat-shade)"></ellipse>
-                <circle cx="102" cy="78" r="45" fill="var(--cat-shade)"></circle>
-                <circle cx="70" cy="60" r="13" fill="var(--cat-shade)"></circle>
-                <circle cx="134" cy="60" r="13" fill="var(--cat-shade)"></circle>
-                <ellipse cx="76" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
-                <ellipse cx="128" cy="158" rx="12" ry="16" fill="var(--cat-shade)"></ellipse>
-              </svg>
-            </div>
-            <!-- right side -->
-            <div class="blade" id="bladeRight" style="transform: rotateY(90deg);">
-              <svg viewBox="0 0 200 180">
-                <ellipse cx="102" cy="118" rx="50" ry="41" fill="var(--cat-shade)"></ellipse>
-                <circle cx="102" cy="78" r="42" fill="var(--cat-shade)"></circle>
-                <ellipse cx="76" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
-                <ellipse cx="128" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
-              </svg>
-            </div>
-            <!-- left side -->
-            <div class="blade" id="bladeLeft" style="transform: rotateY(270deg);">
-              <svg viewBox="0 0 200 180">
-                <ellipse cx="102" cy="118" rx="50" ry="41" fill="var(--cat-shade)"></ellipse>
-                <circle cx="102" cy="78" r="42" fill="var(--cat-shade)"></circle>
-                <ellipse cx="76" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
-                <ellipse cx="128" cy="158" rx="11" ry="16" fill="var(--cat-shade)"></ellipse>
-              </svg>
-            </div>
-            <!-- top -->
-            <div class="blade" id="bladeTop" style="transform: rotateX(90deg);">
-              <svg viewBox="0 0 200 180">
-                <ellipse cx="102" cy="98" rx="54" ry="46" fill="var(--cat-white)"></ellipse>
-                <circle cx="70" cy="70" r="12" fill="var(--cat-white)"></circle>
-                <circle cx="134" cy="70" r="12" fill="var(--cat-white)"></circle>
-              </svg>
-            </div>
-            <!-- bottom -->
-            <div class="blade" id="bladeBottom" style="transform: rotateX(270deg);">
-              <svg viewBox="0 0 200 180">
-                <ellipse cx="102" cy="138" rx="50" ry="40" fill="var(--cat-shade)"></ellipse>
-                <ellipse cx="76" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
-                <ellipse cx="128" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
-              </svg>
-            </div>
+          <!-- back: the "other side" shown during the pirouette flip-card swap.
+               Plain 2D content, no 3D transform -- see pirouette() for how it's used. -->
+          <div class="blade" id="bladeBack" aria-hidden="true">
+            <svg viewBox="0 0 200 180">
+              <ellipse cx="102" cy="118" rx="58" ry="42" fill="var(--cat-shade)"></ellipse>
+              <circle cx="102" cy="78" r="46" fill="var(--cat-shade)"></circle>
+              <circle cx="70" cy="60" r="14" fill="var(--cat-shade)"></circle>
+              <circle cx="134" cy="60" r="14" fill="var(--cat-shade)"></circle>
+              <ellipse cx="76" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
+              <ellipse cx="128" cy="158" rx="13" ry="17" fill="var(--cat-shade)"></ellipse>
+            </svg>
           </div>
           <div class="blade" id="bladeFront">
           <svg class="cat" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An illustration of a white Persian cat, leaping.">
@@ -691,10 +647,6 @@
     var catSvg = document.querySelector("svg.cat");
     var bladeFront = document.getElementById("bladeFront");
     var bladeBack = document.getElementById("bladeBack");
-    var bladeRight = document.getElementById("bladeRight");
-    var bladeLeft = document.getElementById("bladeLeft");
-    var bladeTop = document.getElementById("bladeTop");
-    var bladeBottom = document.getElementById("bladeBottom");
     var captionEl = document.getElementById("caption");
     var leapBtn = document.getElementById("leapBtn");
     var zoomiesBtn = document.getElementById("zoomiesBtn");
@@ -858,93 +810,64 @@
       }
 
       busy = true;
-      tilt3d.classList.add("pirouetting");
       var duration = 1300;
       var startBottom = pos.bottom;
       var peakBottom = Math.min(MAX_BOTTOM, startBottom + 26);
 
-      // Rotate one axis at a time (spin around Y, then flip around X) rather than blending
-      // all three simultaneously -- the flat "orthogonal cross" panels that fake volume only
-      // add up to a solid body when the object turns around one axis at a time; compound
-      // multi-axis rotation makes them fan apart into visibly separate, gappy pieces.
+      // "Flip card" illusion: squish the visible layer down to a sliver with a plain
+      // 2D scale, swap which layer is opaque at the exact moment it's edge-on (and
+      // therefore imperceptibly thin), then un-squish the other side. Spin phase
+      // squishes horizontally (scaleX), flip phase squishes vertically (scaleY).
+      // This uses only ordinary 2D transforms and opacity -- no perspective, no
+      // preserve-3d, no backface-visibility -- so there's no dependence on a
+      // browser's 3D compositing to keep the body looking solid.
       var yPhase = 0.45;
       var DEG = Math.PI / 180;
-      // Narrow crossfade band around the exact edge-on point, so panels swap
-      // over a couple of degrees instead of popping -- but never sit at a
-      // partial, see-through opacity for long.
-      function faceOpacity(z){
-        var band = 0.08;
-        return clamp((z + band) / (2 * band), 0, 1);
-      }
 
-      var N = 28;
-      var rigFrames = [], shadowFrames = [], spinFrames = [];
-      var frontFrames = [], backFrames = [], rightFrames = [], leftFrames = [], topFrames = [], bottomFrames = [];
+      // Dense sampling matters here: the opacity swap has to land while the shape is
+      // genuinely near-zero width, or the two layers blend at a visible size instead
+      // of an imperceptible sliver. Coarser sampling (originally 28) let the true
+      // crossover fall between keyframes, leaving a real see-through gap.
+      var N = 200;
+      var rigFrames = [], shadowFrames = [], tiltFrames = [], frontFrames = [], backFrames = [];
       for(var i = 0; i <= N; i++){
         var t = i / N;
         var y = quadBezier(startBottom, peakBottom, startBottom, t);
         var height = Math.max(0, y - startBottom);
         var shrink = clamp(height / (peakBottom - startBottom || 1), 0, 1);
-        var depth = 30 * Math.sin(t * Math.PI);
-        var rotY, rotX, angleRad;
-        var frontOp, backOp, rightOp, leftOp, topOp, bottomOp;
+        var lean = 8 * Math.sin(t * Math.PI);
+        var angle, cosVal, scaleMag, axis;
         if(t <= yPhase){
-          rotY = 360 * (t / yPhase);
-          rotX = 0;
-          angleRad = rotY * DEG;
-          frontOp = faceOpacity(Math.cos(angleRad));
-          backOp = faceOpacity(-Math.cos(angleRad));
-          rightOp = faceOpacity(-Math.sin(angleRad));
-          leftOp = faceOpacity(Math.sin(angleRad));
-          // top/bottom aren't in play during the Y-spin phase -- hard off,
-          // not run through faceOpacity (which treats z=0 as a 50% crossfade
-          // midpoint, not "inactive"), otherwise they'd sit stuck at 0.5.
-          topOp = 0;
-          bottomOp = 0;
+          angle = 360 * (t / yPhase);
+          axis = "X";
         } else {
-          rotY = 360;
-          rotX = -360 * ((t - yPhase) / (1 - yPhase));
-          angleRad = rotX * DEG;
-          frontOp = faceOpacity(Math.cos(angleRad));
-          backOp = faceOpacity(-Math.cos(angleRad));
-          topOp = faceOpacity(-Math.sin(angleRad));
-          bottomOp = faceOpacity(Math.sin(angleRad));
-          rightOp = 0;
-          leftOp = 0;
+          angle = 360 * ((t - yPhase) / (1 - yPhase));
+          axis = "Y";
         }
+        cosVal = Math.cos(angle * DEG);
+        scaleMag = Math.abs(cosVal);
+        var frontOp = cosVal >= 0 ? 1 : 0;
+        var backOp = 1 - frontOp;
 
         rigFrames.push({ bottom: y + "%", offset: t });
         shadowFrames.push({ transform: "scale(" + (1 - shrink * 0.72) + ")", opacity: (0.5 - shrink * 0.4), offset: t });
-        spinFrames.push({
-          transform: "translateZ(" + depth.toFixed(1) + "px) rotateY(" + rotY.toFixed(1) + "deg) rotateX(" + rotX.toFixed(1) + "deg)",
+        tiltFrames.push({
+          transform: "scale" + axis + "(" + scaleMag.toFixed(3) + ") rotate(" + lean.toFixed(2) + "deg)",
           offset: t
         });
         frontFrames.push({ opacity: frontOp, offset: t });
         backFrames.push({ opacity: backOp, offset: t });
-        rightFrames.push({ opacity: rightOp, offset: t });
-        leftFrames.push({ opacity: leftOp, offset: t });
-        topFrames.push({ opacity: topOp, offset: t });
-        bottomFrames.push({ opacity: bottomOp, offset: t });
       }
 
-      // linear timing throughout so every animation samples the exact same
-      // progress at the exact same moment -- opacity must never drift out of
-      // sync with the rotation it's supposed to be masking.
       var timing = { duration: duration, easing: "linear", fill: "forwards" };
       var rigAnim = rig.animate(rigFrames, timing);
       var shadowAnim = shadow.animate(shadowFrames, timing);
-      var spinAnim = tilt3d.animate(spinFrames, timing);
+      var tiltAnim = tilt3d.animate(tiltFrames, timing);
       var frontAnim = bladeFront.animate(frontFrames, timing);
       var backAnim = bladeBack.animate(backFrames, timing);
-      var rightAnim = bladeRight.animate(rightFrames, timing);
-      var leftAnim = bladeLeft.animate(leftFrames, timing);
-      var topAnim = bladeTop.animate(topFrames, timing);
-      var bottomAnim = bladeBottom.animate(bottomFrames, timing);
 
       setTimeout(function(){
-        [rigAnim, shadowAnim, spinAnim, frontAnim, backAnim, rightAnim, leftAnim, topAnim, bottomAnim].forEach(function(a){ a.cancel(); });
-        tilt3d.style.transform = "";
-        tilt3d.classList.remove("pirouetting");
+        [rigAnim, shadowAnim, tiltAnim, frontAnim, backAnim].forEach(function(a){ a.cancel(); });
         placeInstantly(pos.left, startBottom);
         spawnPuffsAt(pos.left, startBottom);
         busy = false;
